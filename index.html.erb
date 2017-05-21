@@ -1,175 +1,3 @@
-<div id='plans_container' class="plan_react root_component">
-  <div id='new_event_modal'>
-    <%= react_component("NewEventFormApp") %>
-  </div>
-  <div id="event_on_focus" class='my-overlay modal_react' onclick="toggleEventOnFocus()">
-    <div class="my-modal my-wrapper my-wrapper-white stopPropagation">
-      <form onsubmit="updateEvent(event)">
-        <h3>Event Info</h3>
-        <div class='event_on_focus_id'>
-          event id from jquery
-        </div>
-        <br />
-        <input
-          class='event_on_focus_name my-input my-full-width my-block'
-          placeholder="name"
-          onchange="updateEventAttribute(event,'name')"
-        />
-        <br />
-        <input
-          class='event_on_focus_description my-input my-full-width my-block'
-          placeholder="description"
-          onchange="updateEventAttribute(event,'description')"
-        />
-        <br />
-        <select class="event_on_focus_core my-input my-full-width my-block">
-          <option value=''>core</option>
-          <option value='appointment'>appointment</option>
-          <option value='task'>task</option>
-          <option value='contact'>contact</option>
-          <option value='note'>note</option>
-        </select>
-        <br />
-        <select class="event_on_focus_type_of my-input my-full-width my-block">
-          <option value=''>Type</option>
-          <option>web</option>
-          <option>skype</option>
-          <option>call</option>
-          <option>message</option>
-          <option>email</option>
-          <option>payment</option>
-          <option>shop</option>
-          <option>other</option>
-        </select>
-        <br />
-        <select class="event_on_focus_quadrant my-input my-full-width my-block">
-          <option value=''>quadrant</option>
-          <option value='-1'>unassigned</option>
-          <option value='0'>master plan</option>
-          <option value='1'>1</option>
-          <option value='2'>2</option>
-          <option value='3'>3</option>
-          <option value='4'>4</option>
-        </select>
-        <br />
-        <input
-          class='event_on_focus_target my-input my-full-width my-block'
-          placeholder="target"
-          onchange="updateEventAttribute(event,'target')"
-        />
-        <br />
-        <button class='my-button my-full-width'>Submit</button>
-      </form>
-    </div>
-  </div>
-  <div class='actions'>
-    <div id="refreshEvents" class='my-hidden'></div>
-    <div id="hideNewEventsModal" class='my-hidden'></div>
-  </div>
-  <div class='header_react'>
-    <div class='header_left'>
-      <%= image_tag("logo.png", :alt => "Logo", :size => "45x45") %>
-    </div>
-    <div class='header_right my-align-items-inline'>
-      <div class='my-position-relative header_my_pages'>
-        <button
-          class='my-button header_my_pages_toggle'
-          onfocus=toggleMyPages()
-          onblur=toggleMyPages()
-        >My Profile</button>
-        <div id='my_pages'>
-          <div class='my-position-absolute header_my_pages_dropdown_wrapper my-align-left'>
-            <!-- <div onmousedown=redirectTo('/') class='header_my_pages_dropdown my-animate my-animate-fast'>My General Schedule</div> -->
-            <div onmousedown=redirectTo('/plan') class='header_my_pages_dropdown my-animate my-animate-fast'>My Tasks</div>
-            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Completed Tasks</div> -->
-            <div onmousedown=redirectTo('/notes') class='header_my_pages_dropdown my-animate my-animate-fast'>My Notes</div>
-            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Appointments</div> -->
-            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Contacts</div> -->
-            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Preferences</div> -->
-            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Settings</div> -->
-          </div>
-        </div>
-      </div>
-      <div class="header_sign_out">
-        <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
-      </div>
-      <!-- <div
-        class='my-menu my-menu-burger'
-        onfocus=toggleMyPages()
-        onblur=toggleMyPages()
-      ></div> -->
-    </div>
-  </div>
-  <div class="component_wrapper">
-    <div class="twelve columns">
-      <div class="completed_events my-wrapper my-wrapper-yellow add_new_event">
-        <input
-          id='quick_adding_data'
-          placeholder="Add new #appointment, #task, #contact, or #note"
-          onkeyup="quickAddingNew(event)"
-        />
-      </div>
-    </div>
-
-    <div class="six columns">
-      <div class="six columns">
-        <div id='q1' data-quadrant-id='1' class="quadrant my-wrapper my-wrapper-red">
-          q1 rendered from jquery
-        </div>
-      </div>
-      <div class="six columns">
-        <div id='q2' data-quadrant-id='2' class="quadrant my-wrapper my-wrapper-green">
-          q2 rendered from jquery
-        </div>
-      </div>
-      <div class="six columns">
-        <div id='q3' data-quadrant-id='3' class="quadrant my-wrapper my-wrapper-yellow">
-          q3 rendered from jquery
-        </div>
-      </div>
-      <div class="six columns">
-        <div id='q4' data-quadrant-id='4' class="quadrant my-wrapper my-wrapper-gray">
-          q4 rendered from jquery
-        </div>
-      </div>
-    </div>
-    <div class="three columns">
-      <div id="master_plan" data-quadrant-id='0' class="master_plan my-wrapper my-wrapper-blue">
-        master plan
-      </div>
-    </div>
-    <div class="three columns">
-      <div id='events_container' data-quadrant-id='-1' class="unassigned my-wrapper my-wrapper-white">
-        unassigned
-      </div>
-      <div onclick="toggleNewEventModal()" class="add_new my-wrapper my-cursor-pointer my-wrapper-yellow">
-        Add New Event
-      </div>
-      <div id='completed_events' data-quadrant-id='-2' class="completed_events my-wrapper my-wrapper-red">
-        Mark Completed
-      </div>
-    </div>
-  </div>
-  <br /><br /><br /><br /><br /><br />
-  <div
-    class="events_react"
-    id='events_sidebar'
-  >
-    <div
-      class="my-menu my-menu-burger my-float-right"
-      onclick='toggleEventsSidebar()'
-    >
-    </div>
-    <br /><br /><br />
-    <div
-      data-quadrant-id='-1'
-      id='events_container'
-    >
-      events rendered from jquery
-    </div>
-  </div>
-</div>
-
 <script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js'></script>
 <script>
   let state = {
@@ -479,3 +307,176 @@
   }
 
 </script>
+
+
+<div id='plans_container' class="plan_react root_component">
+  <div id='new_event_modal'>
+    <%= react_component("NewEventFormApp") %>
+  </div>
+  <div id="event_on_focus" class='my-overlay modal_react' onclick="toggleEventOnFocus()">
+    <div class="my-modal my-wrapper my-wrapper-white stopPropagation">
+      <form onsubmit="updateEvent(event)">
+        <h3>Event Info</h3>
+        <div class='event_on_focus_id'>
+          event id from jquery
+        </div>
+        <br />
+        <input
+          class='event_on_focus_name my-input my-full-width my-block'
+          placeholder="name"
+          onchange="updateEventAttribute(event,'name')"
+        />
+        <br />
+        <input
+          class='event_on_focus_description my-input my-full-width my-block'
+          placeholder="description"
+          onchange="updateEventAttribute(event,'description')"
+        />
+        <br />
+        <select class="event_on_focus_core my-input my-full-width my-block">
+          <option value=''>core</option>
+          <option value='appointment'>appointment</option>
+          <option value='task'>task</option>
+          <option value='contact'>contact</option>
+          <option value='note'>note</option>
+        </select>
+        <br />
+        <select class="event_on_focus_type_of my-input my-full-width my-block">
+          <option value=''>Type</option>
+          <option>web</option>
+          <option>skype</option>
+          <option>call</option>
+          <option>message</option>
+          <option>email</option>
+          <option>payment</option>
+          <option>shop</option>
+          <option>other</option>
+        </select>
+        <br />
+        <select class="event_on_focus_quadrant my-input my-full-width my-block">
+          <option value=''>quadrant</option>
+          <option value='-1'>unassigned</option>
+          <option value='0'>master plan</option>
+          <option value='1'>1</option>
+          <option value='2'>2</option>
+          <option value='3'>3</option>
+          <option value='4'>4</option>
+        </select>
+        <br />
+        <input
+          class='event_on_focus_target my-input my-full-width my-block'
+          placeholder="target"
+          onchange="updateEventAttribute(event,'target')"
+        />
+        <br />
+        <button class='my-button my-full-width'>Submit</button>
+      </form>
+    </div>
+  </div>
+  <div class='actions'>
+    <div id="refreshEvents" class='my-hidden'></div>
+    <div id="hideNewEventsModal" class='my-hidden'></div>
+  </div>
+  <div class='header_react'>
+    <div class='header_left'>
+      <%= image_tag("logo.png", :alt => "Logo", :size => "45x45") %>
+    </div>
+    <div class='header_right my-align-items-inline'>
+      <div class='my-position-relative header_my_pages'>
+        <button
+          class='my-button header_my_pages_toggle'
+          onfocus=toggleMyPages()
+          onblur=toggleMyPages()
+        >My Profile</button>
+        <div id='my_pages'>
+          <div class='my-position-absolute header_my_pages_dropdown_wrapper my-align-left'>
+            <!-- <div onmousedown=redirectTo('/') class='header_my_pages_dropdown my-animate my-animate-fast'>My General Schedule</div> -->
+            <div onmousedown=redirectTo('/plan') class='header_my_pages_dropdown my-animate my-animate-fast'>My Tasks</div>
+            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Completed Tasks</div> -->
+            <div onmousedown=redirectTo('/notes') class='header_my_pages_dropdown my-animate my-animate-fast'>My Notes</div>
+            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Appointments</div> -->
+            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Contacts</div> -->
+            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Preferences</div> -->
+            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Settings</div> -->
+          </div>
+        </div>
+      </div>
+      <div class="header_sign_out">
+        <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+      </div>
+      <!-- <div
+        class='my-menu my-menu-burger'
+        onfocus=toggleMyPages()
+        onblur=toggleMyPages()
+      ></div> -->
+    </div>
+  </div>
+  <div class="component_wrapper">
+    <div class="twelve columns">
+      <div class="completed_events my-wrapper my-wrapper-yellow add_new_event">
+        <input
+          id='quick_adding_data'
+          placeholder="Add new #appointment, #task, #contact, or #note"
+          onkeyup="quickAddingNew(event)"
+        />
+      </div>
+    </div>
+
+    <div class="six columns">
+      <div class="six columns">
+        <div id='q1' data-quadrant-id='1' class="quadrant my-wrapper my-wrapper-red">
+          q1 rendered from jquery
+        </div>
+      </div>
+      <div class="six columns">
+        <div id='q2' data-quadrant-id='2' class="quadrant my-wrapper my-wrapper-green">
+          q2 rendered from jquery
+        </div>
+      </div>
+      <div class="six columns">
+        <div id='q3' data-quadrant-id='3' class="quadrant my-wrapper my-wrapper-yellow">
+          q3 rendered from jquery
+        </div>
+      </div>
+      <div class="six columns">
+        <div id='q4' data-quadrant-id='4' class="quadrant my-wrapper my-wrapper-gray">
+          q4 rendered from jquery
+        </div>
+      </div>
+    </div>
+    <div class="three columns">
+      <div id="master_plan" data-quadrant-id='0' class="master_plan my-wrapper my-wrapper-blue">
+        master plan
+      </div>
+    </div>
+    <div class="three columns">
+      <div id='events_container' data-quadrant-id='-1' class="unassigned my-wrapper my-wrapper-white">
+        unassigned
+      </div>
+      <div onclick="toggleNewEventModal()" class="add_new my-wrapper my-cursor-pointer my-wrapper-yellow">
+        Add New Event
+      </div>
+      <div id='completed_events' data-quadrant-id='-2' class="completed_events my-wrapper my-wrapper-red">
+        Mark Completed
+      </div>
+    </div>
+  </div>
+  <br /><br /><br /><br /><br /><br />
+  <div
+    class="events_react"
+    id='events_sidebar'
+  >
+    <div
+      class="my-menu my-menu-burger my-float-right"
+      onclick='toggleEventsSidebar()'
+    >
+    </div>
+    <br /><br /><br />
+    <div
+      data-quadrant-id='-1'
+      id='events_container'
+    >
+      events rendered from jquery
+    </div>
+  </div>
+</div>
