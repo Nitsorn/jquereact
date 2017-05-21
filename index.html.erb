@@ -1,0 +1,481 @@
+<div id='plans_container' class="plan_react root_component">
+  <div id='new_event_modal'>
+    <%= react_component("NewEventFormApp") %>
+  </div>
+  <div id="event_on_focus" class='my-overlay modal_react' onclick="toggleEventOnFocus()">
+    <div class="my-modal my-wrapper my-wrapper-white stopPropagation">
+      <form onsubmit="updateEvent(event)">
+        <h3>Event Info</h3>
+        <div class='event_on_focus_id'>
+          event id from jquery
+        </div>
+        <br />
+        <input
+          class='event_on_focus_name my-input my-full-width my-block'
+          placeholder="name"
+          onchange="updateEventAttribute(event,'name')"
+        />
+        <br />
+        <input
+          class='event_on_focus_description my-input my-full-width my-block'
+          placeholder="description"
+          onchange="updateEventAttribute(event,'description')"
+        />
+        <br />
+        <select class="event_on_focus_core my-input my-full-width my-block">
+          <option value=''>core</option>
+          <option value='appointment'>appointment</option>
+          <option value='task'>task</option>
+          <option value='contact'>contact</option>
+          <option value='note'>note</option>
+        </select>
+        <br />
+        <select class="event_on_focus_type_of my-input my-full-width my-block">
+          <option value=''>Type</option>
+          <option>web</option>
+          <option>skype</option>
+          <option>call</option>
+          <option>message</option>
+          <option>email</option>
+          <option>payment</option>
+          <option>shop</option>
+          <option>other</option>
+        </select>
+        <br />
+        <select class="event_on_focus_quadrant my-input my-full-width my-block">
+          <option value=''>quadrant</option>
+          <option value='-1'>unassigned</option>
+          <option value='0'>master plan</option>
+          <option value='1'>1</option>
+          <option value='2'>2</option>
+          <option value='3'>3</option>
+          <option value='4'>4</option>
+        </select>
+        <br />
+        <input
+          class='event_on_focus_target my-input my-full-width my-block'
+          placeholder="target"
+          onchange="updateEventAttribute(event,'target')"
+        />
+        <br />
+        <button class='my-button my-full-width'>Submit</button>
+      </form>
+    </div>
+  </div>
+  <div class='actions'>
+    <div id="refreshEvents" class='my-hidden'></div>
+    <div id="hideNewEventsModal" class='my-hidden'></div>
+  </div>
+  <div class='header_react'>
+    <div class='header_left'>
+      <%= image_tag("logo.png", :alt => "Logo", :size => "45x45") %>
+    </div>
+    <div class='header_right my-align-items-inline'>
+      <div class='my-position-relative header_my_pages'>
+        <button
+          class='my-button header_my_pages_toggle'
+          onfocus=toggleMyPages()
+          onblur=toggleMyPages()
+        >My Profile</button>
+        <div id='my_pages'>
+          <div class='my-position-absolute header_my_pages_dropdown_wrapper my-align-left'>
+            <!-- <div onmousedown=redirectTo('/') class='header_my_pages_dropdown my-animate my-animate-fast'>My General Schedule</div> -->
+            <div onmousedown=redirectTo('/plan') class='header_my_pages_dropdown my-animate my-animate-fast'>My Tasks</div>
+            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Completed Tasks</div> -->
+            <div onmousedown=redirectTo('/notes') class='header_my_pages_dropdown my-animate my-animate-fast'>My Notes</div>
+            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Appointments</div> -->
+            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Contacts</div> -->
+            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Preferences</div> -->
+            <!-- <div class='header_my_pages_dropdown my-animate my-animate-fast'>My Settings</div> -->
+          </div>
+        </div>
+      </div>
+      <div class="header_sign_out">
+        <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+      </div>
+      <!-- <div
+        class='my-menu my-menu-burger'
+        onfocus=toggleMyPages()
+        onblur=toggleMyPages()
+      ></div> -->
+    </div>
+  </div>
+  <div class="component_wrapper">
+    <div class="twelve columns">
+      <div class="completed_events my-wrapper my-wrapper-yellow add_new_event">
+        <input
+          id='quick_adding_data'
+          placeholder="Add new #appointment, #task, #contact, or #note"
+          onkeyup="quickAddingNew(event)"
+        />
+      </div>
+    </div>
+
+    <div class="six columns">
+      <div class="six columns">
+        <div id='q1' data-quadrant-id='1' class="quadrant my-wrapper my-wrapper-red">
+          q1 rendered from jquery
+        </div>
+      </div>
+      <div class="six columns">
+        <div id='q2' data-quadrant-id='2' class="quadrant my-wrapper my-wrapper-green">
+          q2 rendered from jquery
+        </div>
+      </div>
+      <div class="six columns">
+        <div id='q3' data-quadrant-id='3' class="quadrant my-wrapper my-wrapper-yellow">
+          q3 rendered from jquery
+        </div>
+      </div>
+      <div class="six columns">
+        <div id='q4' data-quadrant-id='4' class="quadrant my-wrapper my-wrapper-gray">
+          q4 rendered from jquery
+        </div>
+      </div>
+    </div>
+    <div class="three columns">
+      <div id="master_plan" data-quadrant-id='0' class="master_plan my-wrapper my-wrapper-blue">
+        master plan
+      </div>
+    </div>
+    <div class="three columns">
+      <div id='events_container' data-quadrant-id='-1' class="unassigned my-wrapper my-wrapper-white">
+        unassigned
+      </div>
+      <div onclick="toggleNewEventModal()" class="add_new my-wrapper my-cursor-pointer my-wrapper-yellow">
+        Add New Event
+      </div>
+      <div id='completed_events' data-quadrant-id='-2' class="completed_events my-wrapper my-wrapper-red">
+        Mark Completed
+      </div>
+    </div>
+  </div>
+  <br /><br /><br /><br /><br /><br />
+  <div
+    class="events_react"
+    id='events_sidebar'
+  >
+    <div
+      class="my-menu my-menu-burger my-float-right"
+      onclick='toggleEventsSidebar()'
+    >
+    </div>
+    <br /><br /><br />
+    <div
+      data-quadrant-id='-1'
+      id='events_container'
+    >
+      events rendered from jquery
+    </div>
+  </div>
+</div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js'></script>
+<script>
+  let state = {
+    my_pages: false,
+    events_sidebar: false,
+    new_event_modal: false,
+    events: [],
+    quick_adding_data: '',
+    quick_adding_hashtags: [],
+    event_on_focus: null,
+    token: $('meta[name="csrf-token"]').attr('content')
+  };
+
+  $(document).ready( _ => {
+    render();
+    componentDidMount();
+  })
+
+  let setState = (new_attributes, callback) => {
+    state = Object.assign({},state,new_attributes);
+    if (callback) callback();
+    render();
+  }
+
+  let render = () => {
+    const { events, my_pages, events_sidebar, new_event_modal, event_on_focus } = state;
+    let q1_cards = '',
+        q2_cards = '',
+        q3_cards = '',
+        q4_cards = '',
+        master_plan_cards = '',
+        unassigned_event_cards = '';
+
+    // render events
+    if (events) {
+      for (let i = 0; i < events.length; i++) {
+        let event = events[i];
+        if (event.core == 'task') {
+          if (event.quadrant == 0) master_plan_cards += eventCard(event);
+          else if (event.quadrant == 1) q1_cards += eventCard(event);
+          else if (event.quadrant == 2) q2_cards += eventCard(event);
+          else if (event.quadrant == 3) q3_cards += eventCard(event);
+          else if (event.quadrant == 4) q4_cards += eventCard(event);
+          else unassigned_event_cards += eventCard(event);
+        }
+      }
+      $('#master_plan').html(master_plan_cards);
+      $('#events_container').html(unassigned_event_cards);
+      $('#q1').html(q1_cards);
+      $('#q2').html(q2_cards);
+      $('#q3').html(q3_cards);
+      $('#q4').html(q4_cards);
+    }
+
+    // render menus
+    if (my_pages) $('#my_pages').show();
+    else $('#my_pages').hide();
+
+    if (events_sidebar) $('#events_sidebar').show();
+    else $('#events_sidebar').hide();
+
+    if (new_event_modal) $('#new_event_modal').show();
+    else $('#new_event_modal').hide();
+
+    if (event_on_focus) {
+      $('#event_on_focus').show();
+      // bind event info
+      $('.event_on_focus_name').val(event_on_focus.name);
+      $('.event_on_focus_id').html(event_on_focus.id);
+      $('.event_on_focus_description').val(event_on_focus.description);
+      $('.event_on_focus_type_of').val(event_on_focus.type_of);
+      $('.event_on_focus_core').val(event_on_focus.core);
+      $('.event_on_focus_quadrant').val(event_on_focus.quadrant);
+      $('.event_on_focus_target').val(event_on_focus.actions[0] ? event_on_focus.actions[0].target : '');
+    }
+    else $('#event_on_focus').hide();
+
+    // databinding
+    $('#quick_adding_data').val(state.quick_adding_data);
+
+  }
+
+  let eventCard = (event) => {
+    let has_action = event.actions && event.actions.length;
+    return (
+      `<div
+        class="event_react_temporary ${
+          has_action && 'has_action'
+        }"
+        onclick="toggleEventOnFocus(event)"
+        data-event-id=${event.id}
+      >
+          ${event.name}
+          ${ has_action &&
+            `<div
+              data-event-id=${event.id}
+              onclick="openEventTarget(event)"
+              class="event_react_temporary_action_wrapper" />`
+          }
+      </div>`
+    )
+  }
+
+  let componentDidMount = () => {
+
+    refreshEvents();
+
+    $('#hideNewEventsModal').on('click', _ => {
+      setState({
+        new_event_modal: false
+      })
+    })
+    $('#refreshEvents').on('click', _ => {
+      refreshEvents();
+    })
+
+    $('.stopPropagation').on('click', e => {
+      e.stopPropagation();
+    })
+
+    if (window.innerWidth > 500) {
+      let drake = dragula([
+        document.querySelector('#q1'),
+        document.querySelector('#q2'),
+        document.querySelector('#q3'),
+        document.querySelector('#q4'),
+        document.querySelector('#master_plan'),
+        document.querySelector('#completed_events'),
+        document.querySelector('#events_container'),
+      ]);
+      drake.on('drop', (el, target, source, sibling) => {
+        let event_id = Number(el.getAttribute('data-event-id'));
+        let quadrant = Number(target.getAttribute('data-quadrant-id'));
+        assignToQuadrant(event_id, quadrant);
+        if (quadrant == -2) drake.remove();
+      })
+    }
+    else debugger;
+  }
+
+  let refreshEvents = () => {
+    fetch('/my_api/events/all_tasks', {
+      credentials: 'same-origin',
+      headers : {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+       }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setState({
+          events: response.events
+        })
+      })
+  }
+
+  let assignToQuadrant = (event_id, quadrant) => {
+    const { token } = state;
+
+    fetch('/my_api/events/assign_to_quadrant', {
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-Token': token
+      },
+      body: JSON.stringify({
+        event_id, quadrant
+      })
+    }).then( response => response.json())
+      .then( response => {
+        setState({
+          events: response.events
+        })
+      })
+  }
+
+  let toggleMyPages = () => {
+    setState({
+      my_pages: !state.my_pages
+    })
+  }
+
+  let redirectTo = (url) => {
+    window.location.href = url;
+  }
+
+  let toggleEventsSidebar = () => {
+    setState({
+      events_sidebar: !state.events_sidebar
+    })
+  }
+
+  let toggleNewEventModal = () => {
+    setState({
+      new_event_modal: !state.new_event_modal
+    })
+  }
+
+  let toggleEventOnFocus = (e) => {
+    debugger;
+    if (e && !state.event_on_focus) {
+      let event_id = e.target.getAttribute('data-event-id');
+      let event_on_focus = state.events.filter(event => event.id == event_id)[0];
+      setState({
+        event_on_focus
+      })
+    }
+    else setState({
+      event_on_focus: null
+    })
+  }
+
+  let openEventTarget = (e) => {
+    debugger;
+    e.stopPropagation();
+    let event_id = e.target.getAttribute('data-event-id');
+    let event = state.events.filter(event => event.id == event_id)[0];
+    if (event.type_of == 'web' && event.actions.length && event.actions[0].target) {
+      let anchor = document.createElement('a');
+      anchor.href = event.actions[0].target;
+      anchor.target = '_blank';
+      anchor.click();
+    }
+  }
+
+  let quickAddingNew = (e) => {
+    const { token } = state;
+
+    if (e.keyCode && e.keyCode == 13 && e.key == "Enter") {
+      fetch('/my_api/events/quick_create', {
+        credentials: 'same-origin',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRF-Token': token
+        },
+        body: JSON.stringify({
+          string: state.quick_adding_data,
+          hashtags: state.quick_adding_hashtags,
+          default_core: 'task'
+        })
+      }).then( response => response.json())
+        .then( response => {
+          setState({
+            events: response.events,
+            quick_adding_data: '',
+            quick_adding_hashtags: []
+          })
+        })
+        .catch( error => {
+          debugger;
+        })
+    }
+    setState({
+      quick_adding_data: e.target.value,
+      quick_adding_hashtags: findHashTags(e.target.value)
+    })
+  }
+
+  let updateEventAttribute = (e, attribute) => {
+    let { event_on_focus } = state;
+    event_on_focus[attribute] = e.target.value;
+    setState({
+      event_on_focus
+    })
+  }
+
+  let updateEvent = (e) => {
+    e.preventDefault();
+    let { event_on_focus, token } = state;
+    fetch('/my_api/events/update', {
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-Token': token
+      },
+      body: JSON.stringify({
+        event: event_on_focus
+      })
+    }).then( response => response.json())
+      .then( response => {
+        setState({
+          events: response.events,
+          event_on_focus: null
+        })
+      })
+  }
+
+  let findHashTags = (searchText) => {
+    let regexp = /(\s|^)\#\w\w+\b/gm
+    result = searchText.match(regexp);
+    if (result) {
+        result = result.map((s) => s.trim());
+        console.log(result);
+        return result;
+    } else {
+        return false;
+    }
+  }
+
+</script>
