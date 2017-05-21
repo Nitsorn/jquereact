@@ -1,5 +1,5 @@
 # jquereact
-Just a page in an app im building | http://www.optimate.me/
+Just a page in an app im building | http://www.optimate.me/ (github: https://github.com/Nitsorn/optimate)
 
 - replicating React data-flow and component-based life-cycles
 - replicating React setState and rerenders
