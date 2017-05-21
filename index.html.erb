@@ -12,6 +12,7 @@
   };
 
   $(document).ready( _ => {
+    componentWillMount();
     render();
     componentDidMount();
   })
@@ -20,6 +21,10 @@
     state = Object.assign({},state,new_attributes);
     if (callback) callback();
     render();
+  }
+
+  let componentWillMount = () => {
+    // willMount
   }
 
   let render = () => {
@@ -77,6 +82,8 @@
 
     // databinding
     $('#quick_adding_data').val(state.quick_adding_data);
+
+    componentDidUpdate();
 
   }
 
@@ -136,6 +143,10 @@
       })
     }
     else debugger;
+  }
+
+  let componentDidUpdate = () => {
+    // did update
   }
 
   let refreshEvents = () => {
